@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<!-- 송쌤과학 가상실험실 | 다중 섬광 사진(운동 분석) · v2.0 · 2026-09-20 -->
+<!-- 송쌤과학 가상실험실 | 다중 섬광 사진(운동 분석) · v2.1 · 2026-09-20 -->
 <html lang="ko" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="dark light">
 <meta name="description" content="카메라나 영상으로 일정한 시간 간격의 다중 섬광 사진을 만들어 물체의 운동을 분석하는 체험형 가상실험실">
-<meta name="version" content="2.0">
+<meta name="version" content="2.1">
 <title>송쌤과학 가상실험실 | 다중 섬광 사진</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='14' cy='32' r='6' fill='%2363d2e6' opacity='.35'/%3E%3Ccircle cx='31' cy='32' r='6' fill='%2363d2e6' opacity='.65'/%3E%3Ccircle cx='50' cy='32' r='6' fill='%2363d2e6'/%3E%3C/svg%3E">
 <script>(function(){try{var t=localStorage.getItem('ssv-theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}})();</script>
@@ -41,6 +41,10 @@
   --band-bg:#ffffff; --band-line:#d2dce4;
 }
 :root{
+  /* 장면(영상)은 두 테마 모두 어둡다. 그 위에 얹히는 글자·자취·칩은 테마를 따라가면 안 된다 */
+  --on-stage-1:#eef4f9; --on-stage-2:#9db0c0; --on-stage-line:#3a4d61;
+  --on-stage-accent:#63d2e6;
+  --stage-chip-bg:rgba(9,14,20,.66); --stage-chip-line:rgba(190,215,235,.28);
   --font-ui:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
   --brand-pink:#FFB7B2; --brand-ink:#17242e;
   --r-1:8px; --r-2:12px; --r-3:18px; --r-full:999px;
@@ -115,36 +119,36 @@ a{color:var(--accent)}
 .stage>video{background:var(--stage)}
 .empty{
   position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:10px;
-  text-align:center;padding:24px;color:var(--text-2);
+  text-align:center;padding:24px;color:var(--on-stage-2);
 }
-.empty svg{width:46px;height:46px;stroke-width:1.4;color:var(--line-2)}
-.empty b{font-size:18px;font-weight:600;color:var(--text-1);line-height:1.35}
-.empty span{font-size:13px;color:var(--text-3)}
+.empty svg{width:46px;height:46px;stroke-width:1.4;color:var(--on-stage-line)}
+.empty b{font-size:18px;font-weight:600;color:var(--on-stage-1);line-height:1.35}
+.empty span{font-size:13px;color:var(--on-stage-2)}
 .narrow-only{display:none}
 .corner{position:absolute;top:12px;display:flex;gap:6px;align-items:center;z-index:3}
 .corner.tr{right:12px}
 .corner.tl{left:12px}
 .save-btn{
   display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 13px;
-  border:1px solid var(--line-2);border-radius:var(--r-1);
-  background:color-mix(in oklab,var(--surface-1) 80%,transparent);
+  border:1px solid var(--stage-chip-line);border-radius:var(--r-1);
+  background:var(--stage-chip-bg);
   backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
-  color:var(--text-1);font-size:13px;font-weight:600;white-space:nowrap;
+  color:var(--on-stage-1);font-size:13px;font-weight:600;white-space:nowrap;
   box-shadow:var(--shadow-float);
 }
 .save-btn .ic{width:18px;height:18px}
-.save-btn:hover{border-color:var(--accent);color:var(--accent)}
+.save-btn:hover{border-color:var(--on-stage-accent);color:var(--on-stage-accent)}
 .save-btn:active{transform:scale(.96)}
 .save-btn[aria-busy="true"]{opacity:.55;cursor:progress}
 .save-btn::before{content:"";position:absolute;left:0;right:0;top:-3px;bottom:-3px}
 .save-btn:disabled{opacity:.4;cursor:not-allowed}
 .rec-chip{
   display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 12px;
-  border-radius:var(--r-full);background:var(--rec-bg);color:var(--rec);
-  border:1px solid color-mix(in oklab,var(--rec) 40%,transparent);
+  border-radius:var(--r-full);background:var(--stage-chip-bg);color:#ff8f8f;
+  border:1px solid rgba(255,143,143,.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;
 }
-.rec-dot{width:7px;height:7px;border-radius:50%;background:var(--rec);animation:blink 1.1s infinite}
+.rec-dot{width:7px;height:7px;border-radius:50%;background:#ff8f8f;animation:blink 1.1s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 .shutter{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:4;animation:shut .3s var(--ease-out)}
 @keyframes shut{0%{opacity:0}22%{opacity:.6}100%{opacity:0}}
@@ -305,6 +309,10 @@ dialog::backdrop{background:var(--scrim);backdrop-filter:blur(4px)}
   .brand,.topbar .vline,.channels{display:none}
   .page-title{font-size:13px}
   .brandstrip{display:flex}
+  .toast{bottom:calc(env(safe-area-inset-bottom) + 112px)}
+  .toggle{padding:0 8px;gap:5px;font-size:12px}
+  .toggle .ic{width:15px;height:15px}
+  .tl-head{gap:6px}
   .workspace{padding:10px 10px 8px}
   .scene-area{height:min(34dvh,250px)}
   .tl-sum b{font-size:24px}
@@ -323,7 +331,7 @@ dialog::backdrop{background:var(--scrim);backdrop-filter:blur(4px)}
   .chip,.btn,.toggle{border-color:var(--line-2)}
 }
 @media (prefers-reduced-transparency:reduce){
-  .save-btn{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--surface-1)}
+  .save-btn{backdrop-filter:none;-webkit-backdrop-filter:none;background:#0d131a}
   dialog::backdrop{backdrop-filter:none}
 }
 body.fs .topbar{position:fixed;left:0;right:0;top:0}
@@ -348,6 +356,7 @@ body.fs .app{padding-top:0}
   <symbol id="i-play" viewBox="0 0 24 24"><path d="M7.8 5.4 19 12 7.8 18.6z" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
   <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6.8" y="6.8" width="10.4" height="10.4" rx="2.2" fill="currentColor" stroke="none"/></symbol>
   <symbol id="i-reset" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.5-5.8"/><path d="M20.2 4.6v5.2H15"/></symbol>
+  <symbol id="i-track" viewBox="0 0 24 24"><path d="M4 18.2c3.4 0 5.6-1.6 7.6-4.4S15.8 7 20 5.8"/><circle cx="4.6" cy="18.2" r="1.5"/><circle cx="11.6" cy="13.8" r="1.5"/><circle cx="19.4" cy="6" r="1.5"/></symbol>
   <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2.2"/><path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24"><path d="m6.6 6.6 10.8 10.8M17.4 6.6 6.6 17.4"/></symbol>
 </defs></svg>
@@ -398,7 +407,7 @@ body.fs .app{padding-top:0}
       </div>
     </div>
 
-    <div class="group">
+    <div class="group" id="groupDuration">
       <div class="row">
         <p class="glabel">③ 기록 시간</p>
         <div class="chips" id="chipsDuration" role="group" aria-label="기록 시간">
@@ -464,7 +473,8 @@ body.fs .app{padding-top:0}
       <div class="tl-head">
         <p class="tl-sum"><span>섬광</span><b id="flashCount">0</b><span class="u">개</span><span class="sep">·</span><span class="tl-gap" id="gapText">1/10초 간격</span></p>
         <div class="tl-actions">
-          <button class="toggle" id="btnGrid" aria-pressed="true"><svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg>모눈</button>
+          <button class="toggle" id="btnTrack" aria-pressed="true" title="상의 중심을 이어 자취를 그립니다"><svg class="ic" aria-hidden="true"><use href="#i-track"/></svg>자취</button>
+          <button class="toggle" id="btnGrid" aria-pressed="true" title="거리를 세기 위한 모눈을 표시합니다"><svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg>모눈</button>
         </div>
       </div>
       <canvas id="tlCanvas" aria-hidden="true"></canvas>
@@ -526,7 +536,7 @@ body.fs .app{padding-top:0}
     <article class="card">
       <h3><i>03</i>속력 구하기</h3>
       <p>평균 속력 = <b>이동 거리 ÷ 걸린 시간</b>입니다. 이동 거리는 모눈 칸 수로 세고, 걸린 시간은 <b>섬광 간격 × 지나온 구간 수</b>로 구합니다. 예를 들어 0.1초 간격에서 세 구간을 지났다면 걸린 시간은 0.3초입니다.</p>
-      <p class="link">화면 속 길이는 실제 길이가 아니에요. 자나 30cm 막대를 물체와 함께 찍으면 실제 거리도 잴 수 있습니다.</p>
+      <p class="link">화면 속 길이는 실제 길이가 아니에요. 자나 30cm 막대를 물체와 함께 찍으면 실제 거리도 잴 수 있습니다. 장면 아래 <b>자취</b>를 켜면 상의 중심을 이은 선이 보입니다.</p>
     </article>
   </div>
 </dialog>
@@ -540,8 +550,8 @@ body.fs .app{padding-top:0}
   <div class="dbody">
     <div class="steps">
       <div class="step"><span class="n">1</span><div><h4>카메라를 켜거나 영상을 엽니다</h4><p>카메라를 처음 켜면 브라우저가 권한을 묻습니다. <b>허용</b>을 눌러 주세요. 촬영해 둔 영상 파일을 열어도 됩니다.</p></div></div>
-      <div class="step"><span class="n">2</span><div><h4>카메라를 고정합니다</h4><p>삼각대나 책 위에 올려 <b>움직이지 않게</b> 두세요. 카메라가 흔들리면 배경까지 움직인 것으로 인식합니다.</p></div></div>
-      <div class="step"><span class="n">3</span><div><h4>섬광 간격을 고릅니다</h4><p>빠른 운동은 <b>1/30초</b>, 천천히 굴러가는 공은 <b>0.2초</b>가 알맞습니다. 이 값이 사진 속 상 사이의 시간입니다.</p></div></div>
+      <div class="step"><span class="n">2</span><div><h4>카메라를 고정합니다</h4><p>삼각대나 책 위에 올려 <b>움직이지 않게</b> 두세요. 카메라가 흔들리면 배경까지 움직인 것으로 인식합니다. 물체는 <b>카메라와 나란한 면</b>에서 움직여야 화면 속 간격이 실제 간격과 비례합니다.</p></div></div>
+      <div class="step"><span class="n">3</span><div><h4>섬광 간격을 고릅니다</h4><p>이 값이 사진 속 상과 상 사이의 시간입니다. <b>자유 낙하</b>처럼 빠른 운동은 <b>1/30초</b>를 고르세요 — 책상 높이(약 80cm)에서 떨어뜨리면 약 0.4초가 걸려 상이 12장쯤 남습니다. 천천히 굴러가는 공은 0.2초가 알맞습니다.</p></div></div>
       <div class="step"><span class="n">4</span><div><h4>분석을 시작하고 물체를 움직입니다</h4><p>기록 시간이 끝나면 자동으로 멈춥니다. 마음에 들지 않으면 <b>지우고 다시 찍기</b>를 누르세요.</p></div></div>
       <div class="step"><span class="n">5</span><div><h4>결과 저장</h4><p>장면 오른쪽 위 <b>결과 저장</b>을 누르면 조건이 적힌 PNG 한 장이 기기의 다운로드 폴더로 저장됩니다. 아이패드는 저장 확인 창이 뜹니다.</p></div></div>
     </div>
@@ -551,6 +561,7 @@ body.fs .app{padding-top:0}
         · 아무것도 안 찍힌다면 <b>배경 지우기</b>를 <b>약하게</b>로 바꿔 보세요.<br>
         · 배경까지 찍힌다면 <b>세게</b>로 바꾸거나 조명을 밝게 하세요.<br>
         · 어두운 곳에서 빛나는 물체를 찍을 때는 <b>밝은 물체</b>를 고르세요.<br>
+        · 1/30초는 카메라가 1초에 30장을 찍을 때까지만 가능합니다. 더 느린 카메라면 안내가 뜹니다.<br>
         · 크롬·엣지 최신 버전에서 가장 안정적으로 동작합니다.
       </p>
     </div>
@@ -573,7 +584,7 @@ body.fs .app{padding-top:0}
 <script>
 (() => {
 'use strict';
-const APP_VERSION = '2.0';
+const APP_VERSION = '2.1';
 const $ = s => document.querySelector(s);
 const tok = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const FONT = "'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif";
@@ -587,14 +598,14 @@ const small = document.createElement('canvas'), smallCtx = small.getContext('2d'
 const mask = document.createElement('canvas'), maskCtx = mask.getContext('2d');
 
 /* ── 상태 ── */
-const S = {interval:0.1, duration:5, mode:'motion', strength:'mid', grid:true};
+const S = {interval:0.1, duration:5, mode:'motion', strength:'mid', grid:true, track:true};
 const STRENGTH = {low:{th:16, r:1}, mid:{th:27, r:2}, high:{th:42, r:3}};
 const MAX_FLASH = 300;
 let srcKind = 'none', srcName = '', stream = null;
 let W = 0, H = 0, MW = 0, MH = 0;
 let alphaA = null, alphaB = null, alphaT = null, maskImg = null, bgArr = null;
-let bgSamples = [], flashes = [], running = false, hasResult = false;
-let rafId = 0, vfcId = 0, camFps = 0, startTs = 0, lastTs = 0, driftWarned = false;
+let bgSamples = [], flashes = [], marks = [], running = false, hasResult = false;
+let rafId = 0, vfcId = 0, camFps = 0, startTs = 0, lastTs = 0, driftWarned = false, cappedByMax = false;
 let tlW = 0, tlH = 52;
 
 /* ══════════ 테마 ══════════ */
@@ -606,7 +617,7 @@ function applyTheme(t){
   b.setAttribute('aria-label', next + ' 모드로 전환 (D)');
   b.setAttribute('title', next + ' 모드로 전환 (D)');
   b.querySelector('use').setAttribute('href', t === 'dark' ? '#i-moon' : '#i-sun');
-  drawGrid(); drawTimeline();
+  drawOverlay(); drawTimeline();
 }
 function toggleTheme(){ applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'); }
 $('#btnTheme').addEventListener('click', toggleTheme);
@@ -695,7 +706,12 @@ $('#segStrength').addEventListener('click', e => {
 $('#btnGrid').addEventListener('click', () => {
   S.grid = !S.grid;
   $('#btnGrid').setAttribute('aria-pressed', String(S.grid));
-  drawGrid();
+  drawOverlay();
+});
+$('#btnTrack').addEventListener('click', () => {
+  S.track = !S.track;
+  $('#btnTrack').setAttribute('aria-pressed', String(S.track));
+  drawOverlay();
 });
 
 /* ══════════ 입력 소스 ══════════ */
@@ -762,6 +778,7 @@ function onSourceReady(){
     $('#empty').hidden = true;
     $('#srcState').innerHTML = '<span class="ok"></span><span></span>';
     $('#srcState').lastElementChild.textContent = (srcKind === 'cam' ? '카메라 · ' : '영상 · ') + srcName;
+    $('#groupDuration').hidden = srcKind === 'file';   // 영상은 길이 자체가 기록 시간이다
     $('#btnStart').disabled = false;
     $('#btnStart').removeAttribute('title');
     $('#btnSave').disabled = false;
@@ -785,7 +802,7 @@ function layout(){
   alphaT = new Uint8ClampedArray(MW * MH);
   maskImg = maskCtx.createImageData(MW, MH);
   for(let i = 0; i < MW * MH; i++){ maskImg.data[i*4] = 255; maskImg.data[i*4+1] = 255; maskImg.data[i*4+2] = 255; }
-  drawGrid();
+  drawOverlay();
 }
 
 /* ══════════ 배경 학습 ══════════ */
@@ -887,12 +904,37 @@ function buildMask(){
 }
 
 /* ══════════ 섬광 한 장 ══════════ */
+// 이번 섬광에서 물체가 있던 자리(마스크의 무게중심). 값이 못 미더우면 null.
+function markFromMask(){
+  let sx = 0, sy = 0, n = 0;
+  for(let p = 0; p < alphaA.length; p++){
+    if(alphaA[p] > 128){ sx += p % MW; sy += (p / MW) | 0; n++; }
+  }
+  if(n < 6 || n > alphaA.length * 0.25) return null;     // 너무 작거나 화면 전체가 움직임
+  return {x:(sx / n) / MW, y:(sy / n) / MH};
+}
+function markFromBright(d){
+  let maxL = 0;
+  for(let i = 0; i < d.length; i += 4){ const L = d[i]*0.3 + d[i+1]*0.6 + d[i+2]*0.1; if(L > maxL) maxL = L; }
+  if(maxL < 60) return null;
+  const th = maxL * 0.75;
+  let sx = 0, sy = 0, n = 0;
+  for(let p = 0, i = 0; p < MW * MH; p++, i += 4){
+    const L = d[i]*0.3 + d[i+1]*0.6 + d[i+2]*0.1;
+    if(L >= th){ sx += p % MW; sy += (p / MW) | 0; n++; }
+  }
+  if(n < 6 || n > MW * MH * 0.25) return null;
+  return {x:(sx / n) / MW, y:(sy / n) / MH};
+}
 function captureFlash(t){
   if(S.mode === 'bright'){
+    const d = grab();
+    marks.push(markFromBright(d));
     trailCtx.globalCompositeOperation = flashes.length ? 'lighten' : 'source-over';
     trailCtx.drawImage(video, 0, 0, W, H);
   }else{
     buildMask();
+    marks.push(markFromMask());
     workCtx.globalCompositeOperation = 'source-over';
     workCtx.clearRect(0, 0, W, H);
     workCtx.drawImage(video, 0, 0, W, H);
@@ -923,8 +965,7 @@ async function startAnalysis(){
   setHint('물체를 움직여 보세요. 섬광이 하나씩 쌓입니다.');
 
   if(srcKind === 'file'){
-    const dur = isFinite(video.duration) && video.duration > 0 ? video.duration : S.duration;
-    const end = Math.min(dur, S.duration);
+    const end = isFinite(video.duration) && video.duration > 0 ? video.duration : S.duration;
     $('#recText').textContent = '분석 중 0%';
     await learnBgFromFile(end);
     bdCtx.drawImage(video, 0, 0, W, H);
@@ -934,7 +975,7 @@ async function startAnalysis(){
       captureFlash(t);
       $('#recText').textContent = '분석 중 ' + Math.round(Math.min(1, t / (end || 1)) * 100) + '%';
       drawTimeline(t, end);
-      if(flashes.length >= MAX_FLASH) break;
+      if(flashes.length >= MAX_FLASH){ cappedByMax = true; break; }
       await new Promise(r => setTimeout(r, 0));
     }
     stopAnalysis();
@@ -955,7 +996,8 @@ async function startAnalysis(){
     if(ts - lastTs >= intervalMs - tol){ captureFlash((ts - startTs) / 1000); lastTs = ts; }
     $('#recText').textContent = '기록 중 ' + (el / 1000).toFixed(1) + '초';
     drawTimeline(el / 1000, S.duration);
-    return el >= durMs || flashes.length >= MAX_FLASH;
+    if(flashes.length >= MAX_FLASH) cappedByMax = true;
+    return el >= durMs || cappedByMax;
   };
 
   if(typeof video.requestVideoFrameCallback === 'function'){
@@ -991,10 +1033,14 @@ function stopAnalysis(silent){
   hasResult = flashes.length > 0;
   if(hasResult){
     backdrop.hidden = false; video.hidden = true;
-    const mean = meanGap();
+    const mean = meanGap(), read = readMotion();
     if(mean && Math.abs(mean - S.interval) / S.interval > 0.15){
       setHint('기기가 따라오지 못해 실제 간격이 ' + mean.toFixed(2) + '초가 되었어요. 간격을 넓혀 보세요.', true);
       if(!driftWarned){ driftWarned = true; }
+    }else if(cappedByMax){
+      setHint('상이 ' + MAX_FLASH + '개를 넘어 여기까지만 찍었어요. 간격을 넓혀 보세요.', true);
+    }else if(read){
+      setHint(read.text);
     }else{
       setHint('상 사이 간격이 일정하면 등속, 점점 넓어지면 빨라지는 운동이에요.');
     }
@@ -1002,8 +1048,25 @@ function stopAnalysis(silent){
     setHint('움직임을 찾지 못했어요. [배경 지우기]를 약하게로 바꿔 보세요.', true);
   }
   $('#btnReset').disabled = !hasResult;
+  drawOverlay();
   drawTimeline();
   updateSummary();
+}
+// 잰 자리들의 간격 변화로 운동을 읽는다. 시간 간격은 이미 같으므로 달라지는 것은 거리뿐이다.
+function readMotion(){
+  const pts = marks.filter(Boolean);
+  if(pts.length < 5) return null;
+  const d = [];
+  for(let i = 1; i < pts.length; i++)
+    d.push(Math.hypot((pts[i].x - pts[i-1].x) * W, (pts[i].y - pts[i-1].y) * H));
+  const k = Math.max(2, Math.floor(d.length / 3));
+  const avg = a => a.reduce((x, y) => x + y, 0) / a.length;
+  const head = avg(d.slice(0, k)), tail = avg(d.slice(-k));
+  if(head < W * 0.004 && tail < W * 0.004) return null;   // 거의 제자리
+  const r = tail / (head || 0.001);
+  if(r > 1.3) return {key:'accel', text:'간격이 점점 넓어져요 — 빨라지는 운동이에요.'};
+  if(r < 0.77) return {key:'decel', text:'간격이 점점 좁아져요 — 느려지는 운동이에요.'};
+  return {key:'uniform', text:'간격이 거의 일정해요 — 등속 운동에 가까워요.'};
 }
 function meanGap(){
   if(flashes.length < 2) return 0;
@@ -1013,8 +1076,10 @@ function clearTrail(keepView){
   trailCtx.globalCompositeOperation = 'source-over';
   if(W) trailCtx.clearRect(0, 0, W, H);
   if(W) bdCtx.clearRect(0, 0, W, H);
-  flashes = []; hasResult = false;
+  flashes = []; marks = []; hasResult = false; cappedByMax = false;
   backdrop.hidden = true; video.hidden = false;
+  if(W) gridCtx.clearRect(0, 0, W, H);
+  drawOverlay();
   updateSummary();
   if(!keepView) drawTimeline();
 }
@@ -1037,10 +1102,38 @@ function updateSummary(){
   $('#gapText').textContent = (mean ? (Math.abs(mean - S.interval) / S.interval > 0.15 ? '실제 ' + mean.toFixed(2) + '초 간격' : fmtInterval(S.interval) + ' 간격') : fmtInterval(S.interval) + ' 간격');
 }
 
-/* ══════════ 모눈 ══════════ */
-function drawGrid(){
+/* ══════════ 장면 위 표시 — 모눈과 자취 ══════════ */
+function drawOverlay(){
   if(!W) return;
   gridCtx.clearRect(0, 0, W, H);
+  drawGrid();
+  drawTrack();
+}
+function drawTrack(){
+  if(!S.track) return;
+  const pts = marks.filter(Boolean).map(m => ({x:m.x * W, y:m.y * H}));
+  if(pts.length < 2) return;
+  const k = W / 1280;
+  gridCtx.strokeStyle = tok('--on-stage-accent');
+  gridCtx.lineWidth = Math.max(1.5, 2.6 * k);
+  gridCtx.lineJoin = gridCtx.lineCap = 'round';
+  gridCtx.globalAlpha = .85;
+  gridCtx.beginPath();
+  pts.forEach((p, i) => i ? gridCtx.lineTo(p.x, p.y) : gridCtx.moveTo(p.x, p.y));
+  gridCtx.stroke();
+  if(pts.length <= 60){
+    gridCtx.fillStyle = tok('--on-stage-accent');
+    gridCtx.strokeStyle = '#0a1016';
+    gridCtx.lineWidth = Math.max(1, 1.3 * k);
+    for(const p of pts){
+      gridCtx.beginPath();
+      gridCtx.arc(p.x, p.y, Math.max(2.5, 4 * k), 0, 7);
+      gridCtx.fill(); gridCtx.stroke();
+    }
+  }
+  gridCtx.globalAlpha = 1;
+}
+function drawGrid(){
   if(!S.grid) return;
   const cell = Math.round(W / 16), lw = Math.max(1, Math.round(W / 1000));
   gridCtx.lineWidth = lw;
@@ -1072,7 +1165,8 @@ function drawTimeline(now, span){
   if(!w) return;
   const yAxis = Math.round(h - 22) + .5, yTickTop = 6, yLabel = yAxis + 6.5;
   const pad = 14, x0 = pad, x1 = w - pad, len = x1 - x0;
-  const total = span || Math.max(S.duration, flashes.length ? flashes[flashes.length - 1] : 0) || S.duration;
+  const last = flashes.length ? flashes[flashes.length - 1] : 0;
+  const total = span || (running ? Math.max(S.duration, last) : (last > 0.4 ? last : S.duration));
   tlCtx.clearRect(0, 0, w, h);
   const cLine = tok('--line-1'), cLine2 = tok('--line-2'), cAcc = tok('--accent'), cT3 = tok('--text-3');
 
@@ -1083,7 +1177,7 @@ function drawTimeline(now, span){
   // 1초 눈금
   tlCtx.fillStyle = cT3; tlCtx.font = '500 12px ' + FONT; tlCtx.textAlign = 'center'; tlCtx.textBaseline = 'top';
   tlCtx.strokeStyle = cLine;
-  const stepSec = total > 12 ? 2 : 1;
+  const stepSec = total > 24 ? 5 : total > 12 ? 2 : 1;
   for(let s = 0; s <= total + 1e-6; s += stepSec){
     const x = x0 + (s / total) * len;
     tlCtx.beginPath(); tlCtx.moveTo(x, yAxis); tlCtx.lineTo(x, yAxis + 5); tlCtx.stroke();
@@ -1135,7 +1229,7 @@ async function saveResult(){
     if(hasResult) x.drawImage(backdrop, 0, 0, outW, outH);
     else x.drawImage(video, 0, 0, outW, outH);
     x.drawImage(trail, 0, 0, outW, outH);
-    if(S.grid) x.drawImage(gridCv, 0, 0, outW, outH);
+    x.drawImage(gridCv, 0, 0, outW, outH);      // 모눈 · 자취 (꺼져 있으면 비어 있다)
 
     // 정보 띠
     const ink1 = tok('--text-1'), ink2 = tok('--text-2'), ink3 = tok('--text-3'), acc = tok('--accent');
@@ -1153,7 +1247,10 @@ async function saveResult(){
       + ' · ' + (S.mode === 'motion' ? '움직이는 물체 추적' : '밝은 물체 누적')
       + (flashes.length ? ' · 기록 ' + (flashes[flashes.length - 1]).toFixed(1) + '초' : '');
     x.fillStyle = ink2; x.font = f(500, 19); x.fillText(cond, L, T + Math.round(72 * (outW/1280)));
-    const val = '섬광 ' + flashes.length + '개' + (mean ? ' · 평균 간격 ' + mean.toFixed(3) + '초' : '');
+    const read = readMotion();
+    const val = '섬광 ' + flashes.length + '개'
+      + (mean ? ' · 평균 간격 ' + mean.toFixed(3) + '초' : '')
+      + (read ? ' · ' + read.text.split(' — ')[0] : '');
     x.fillStyle = acc; x.font = f(700, 22); x.fillText(val, L, T + Math.round(104 * (outW/1280)));
 
     x.textAlign = 'right';
